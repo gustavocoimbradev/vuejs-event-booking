@@ -1,4 +1,5 @@
 <img width="100" alt="png-clipart-vue-js-logo-landscape-tech-companies" src="https://github.com/user-attachments/assets/e4aec178-6934-4171-8e0b-36f858f6a369" />
+<img width="900" height="280" alt="png-clipart-vue-js-logo-landscape-tech-companies" src="https://github.com/user-attachments/assets/13bfc8a4-ec4f-46de-8bbf-67bf6320a9e0" />
 
 ## About the project
 
