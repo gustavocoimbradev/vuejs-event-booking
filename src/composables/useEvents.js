@@ -29,7 +29,7 @@ const availableEvents = computed(() => {
 const handleRegistration = async (event) => {
     try {
         const newBooking = {
-            user: { id: fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => crypto.subtle.digest('MD5', new TextEncoder().encode(d.ip))).then(h => console.log(Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join(''))) },
+            user: { id: 1 },
             event
         }
         await addDoc(collection(db, 'bookings'), newBooking)
