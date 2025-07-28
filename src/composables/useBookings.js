@@ -1,7 +1,12 @@
 import { ref } from 'vue'
 
+import useAuthentication from '@/composables/useAuthentication'
+
 import { db } from '@/firebase'
-import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore'
+import { doc, collection, getDocs, addDoc, deleteDoc } from 'firebase/firestore'
+
+
+const { user } = useAuthentication()
 
 const bookings = ref([])
 const loadingBookings = ref(false)
@@ -15,6 +20,20 @@ const fetchBookings = async (pulseEffect = true) => {
         console.error(error)
     } finally {
         loadingBookings.value = false
+    }
+}
+
+const handleRegistration = async (event) => {
+    try {
+        const newBooking = {
+            user: user.value,
+            event
+        }
+        await addDoc(collection(db, 'bookings'), newBooking)
+    } catch (error) {
+        console.error(error)
+    } finally {
+        await fetchBookings(false)
     }
 }
 
@@ -35,6 +54,7 @@ export default function useBookings() {
         bookings,
         loadingBookings,
         fetchBookings,
-        handleCancel
+        handleCancel,
+        handleRegistration
     }
 }

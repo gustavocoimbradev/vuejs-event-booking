@@ -12,8 +12,8 @@
   import useEvents from '@/composables/useEvents'
   import useBookings from '@/composables/useBookings'
 
-  const { loadingEvents, fetchEvents, availableEvents, handleRegistration } = useEvents()
-  const { bookings, loadingBookings, fetchBookings, handleCancel } = useBookings()
+  const { loadingEvents, fetchEvents, availableEvents } = useEvents()
+  const { bookings, loadingBookings, fetchBookings, handleRegistration, handleCancel } = useBookings()
 
   onMounted(() => {
     fetchEvents()
