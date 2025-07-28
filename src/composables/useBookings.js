@@ -40,7 +40,6 @@ const handleRegistration = async (event) => {
 const handleCancel = async (booking) => {
     try {
         await deleteDoc(doc(db, 'bookings', booking.id))
-        console.log(booking.id)
     } catch (error) {
         console.log(error)
     } finally {
