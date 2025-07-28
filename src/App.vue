@@ -42,7 +42,7 @@
             </template>
             <template v-if="loadingEvents" #main>
               <EventCard 
-                v-for="i in 6" 
+                v-for="i in 4" 
                 :eventsLoading="true"
               />
             </template>
@@ -67,7 +67,7 @@
             </template>
             <template v-if="loadingBookings" #main>
               <EventCard
-                v-for="i in 6" 
+                v-for="i in 4" 
                 :eventsLoading="true"
               />
             </template>

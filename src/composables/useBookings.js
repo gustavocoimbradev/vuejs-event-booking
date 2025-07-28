@@ -1,13 +1,16 @@
 import { ref } from 'vue'
 
+import { db } from '@/firebase'
+import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore'
+
 const bookings = ref([])
 const loadingBookings = ref(false)
 
 const fetchBookings = async (pulseEffect = true) => {
     loadingBookings.value = pulseEffect
     try {
-        const response = await fetch('http://localhost:3001/bookings')
-        bookings.value = await response.json()
+        const snapshot = await getDocs(collection(db, 'bookings'))
+        bookings.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
     } catch (error) {
         console.error(error)
     } finally {
@@ -17,10 +20,8 @@ const fetchBookings = async (pulseEffect = true) => {
 
 const handleCancel = async (booking) => {
     try {
-        await fetch('http://localhost:3001/bookings/' + booking.id, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        })
+        await deleteDoc(doc(db, 'bookings', booking.id))
+        console.log(booking.id)
     } catch (error) {
         console.log(error)
     } finally {

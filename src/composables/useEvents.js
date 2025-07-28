@@ -2,6 +2,9 @@ import { ref, computed } from 'vue'
 
 import useBookings from '@/composables/useBookings'
 
+import { db } from '@/firebase'
+import { collection, getDocs, addDoc } from 'firebase/firestore'
+
 const { bookings, fetchBookings } = useBookings()
 
 const events = ref([])
@@ -10,8 +13,8 @@ const loadingEvents = ref(false)
 const fetchEvents = async (pulseEffect = true) => {
     loadingEvents.value = pulseEffect
     try {
-        const response = await fetch('http://localhost:3001/events')
-        events.value = await response.json()
+        const snapshot = await getDocs(collection(db, 'events'))
+        events.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     } finally {
         loadingEvents.value = false
     }
@@ -26,15 +29,10 @@ const availableEvents = computed(() => {
 const handleRegistration = async (event) => {
     try {
         const newBooking = {
-            id: Date.now().toString(),
             user: { id: 1 },
             event
         }
-        await fetch('http://localhost:3001/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newBooking)
-        })
+        await addDoc(collection(db, 'bookings'), newBooking)
     } catch (error) {
         console.error(error)
     } finally {
