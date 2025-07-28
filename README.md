@@ -1,4 +1,4 @@
-<img height="100" alt="vuejs_logo_icon_169247" src="https://github.com/user-attachments/assets/a7ee6ea2-d1e5-40bf-8bab-583b66460616" />
+<img height="100" alt="hire-vuejs-hero" src="https://github.com/user-attachments/assets/75fa5e93-d016-436a-bc47-4b80c2e3bf30" />
 
 ## About the project
 
