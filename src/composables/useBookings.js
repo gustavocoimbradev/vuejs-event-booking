@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import useAuthentication from '@/composables/useAuthentication'
 
 import { db } from '@/firebase'
-import { doc, collection, getDocs, addDoc, deleteDoc } from 'firebase/firestore'
+import { doc, collection, getDocs, addDoc, deleteDoc, where, query } from 'firebase/firestore'
 
 
 const { user } = useAuthentication()
@@ -11,10 +11,14 @@ const { user } = useAuthentication()
 const bookings = ref([])
 const loadingBookings = ref(false)
 
+
 const fetchBookings = async (pulseEffect = true) => {
     loadingBookings.value = pulseEffect
     try {
-        const snapshot = await getDocs(collection(db, 'bookings'))
+        const snapshot = await getDocs(
+            collection(db, 'bookings'),
+            where('user.id', '==', user.value.id)
+        )
         bookings.value = snapshot.docs.map(d => ({ id: d.id, ...d.data() }))
     } catch (error) {
         console.error(error)
@@ -39,7 +43,15 @@ const handleRegistration = async (event) => {
 
 const handleCancel = async (booking) => {
     try {
-        await deleteDoc(doc(db, 'bookings', booking.id))
+        const q = query(
+            collection(db, 'bookings'),
+            where('user.id', '==', user.value.id),
+            where('event.id', '==', booking.event.id)
+        )
+        const snapshot = await getDocs(q)
+        snapshot.forEach(async (docSnap) => {
+            await deleteDoc(docSnap.ref)
+        })
     } catch (error) {
         console.log(error)
     } finally {
